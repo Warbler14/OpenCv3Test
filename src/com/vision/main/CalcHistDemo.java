@@ -11,7 +11,7 @@ public class CalcHistDemo {
 		String filename = args.length > 0 ? args[0] : getResourceFilePath("lena.jpg");
 		
 		
-		new CalcHist().run(filename);
+		new CalcHist().start(filename);
 	}
 	
 	public static String getResourceFilePath(final String fileName) {		
