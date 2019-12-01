@@ -1,5 +1,6 @@
 package com.vision.process;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -10,13 +11,14 @@ public class ModifyImage {
 		// prepare to convert a RGB image in gray scale
 		System.out.print("Convert the image at " + location + " in gray scale... ");
 		
-//		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
 		// get the jpeg image from the internal resource folder
 		Mat image = Imgcodecs.imread(location);
 		
 		// convert the image in gray scale
 		Imgproc.cvtColor(image, image, Imgproc.COLOR_BGR2GRAY);
+//		Imgproc.cvtColor(image, image, Imgproc.COLORMAP_PINK);
 		
 		// write the new image on disk
 		Imgcodecs.imwrite(getModifiyFileName(location, "gray"), image);

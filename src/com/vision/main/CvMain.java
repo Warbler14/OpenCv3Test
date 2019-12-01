@@ -11,7 +11,7 @@ public class CvMain {
 	public static void main(String[] args) {
 		
 //		cvTest();	
-//		modifyImage();		
+		modifyImage();		
 		matchTest();
 //		histogramTest();
 //		featureTest();
@@ -31,6 +31,7 @@ public class CvMain {
 	public static void modifyImage() {
 		new ModifyImage().modifyImageTest(getResourceFilePath("test01.jpg"));
 		new ModifyImage().modifyImageTest(getResourceFilePath("test01.png"));
+		new ModifyImage().modifyImageTest(getResourceFilePath("lena.jpg"));
 	}
 	
 	public static void matchTest() {

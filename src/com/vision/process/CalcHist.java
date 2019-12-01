@@ -31,11 +31,50 @@ public class CalcHist {
 		MatGroup matGroup = new MatGroup();
 		calcHist(histSize, src, matGroup, range, accumulate);
 		normalize(histSize, matGroup, histImage, histW, histH);
-		drawsHistLines(histSize, matGroup, histImage, histW, histH);
+		drawsHistLines(histSize, matGroup, histImage, histW, histH, 1);
 		
 		Imgcodecs.imwrite(getModifiyFileName(filename, "hist"), histImage);
 		
 		HighGui.imshow("Source image", src);
+		HighGui.imshow("calcHist Demo", histImage);
+		HighGui.waitKey(0);
+		System.exit(0);
+		
+	}
+	
+	public void start(String filename1, String filename2) {
+		Mat src1 = Imgcodecs.imread(filename1);
+		if (src1.empty()) {
+			System.err.println("Cannot read image: " + filename1);
+			System.exit(0);
+		}
+		Mat src2 = Imgcodecs.imread(filename2);
+		if (src2.empty()) {
+			System.err.println("Cannot read image: " + filename2);
+			System.exit(0);
+		}
+		
+		int histSize = 256;
+		float[] range = { 0, 256 }; // the upper boundary is exclusive
+		boolean accumulate = false;
+		int histW = 512, histH = 400;
+		Mat histImage = new Mat(histH, histW, CvType.CV_8UC3, new Scalar(0, 0, 0));
+		
+		MatGroup matGroup1 = new MatGroup();
+		MatGroup matGroup2 = new MatGroup();
+		
+		calcHist(histSize, src1, matGroup1, range, accumulate);
+		normalize(histSize, matGroup1, histImage, histW, histH);
+		drawsHistLines(histSize, matGroup1, histImage, histW, histH, 1);
+		
+		calcHist(histSize, src2, matGroup2, range, accumulate);
+		normalize(histSize, matGroup2, histImage, histW, histH);
+		drawsHistLines(histSize, matGroup2, histImage, histW, histH, 2);
+		
+		Imgcodecs.imwrite(getModifiyFileName(filename2, "hist2"), histImage);
+		
+		HighGui.imshow("Source image 1", src1);
+		HighGui.imshow("Source image 2", src2);
 		HighGui.imshow("calcHist Demo", histImage);
 		HighGui.waitKey(0);
 		System.exit(0);
@@ -72,7 +111,7 @@ public class CalcHist {
 		matGroup.setrHistData(rHistData);
 	}
 	
-	public void drawsHistLines(int histSize, MatGroup matGroup, Mat histImage, int histW, int histH) {
+	public void drawsHistLines(int histSize, MatGroup matGroup, Mat histImage, int histW, int histH, int thickness) {
 		float[] bHistData = matGroup.getbHistData();
 		float[] gHistData = matGroup.getgHistData();
 		float[] rHistData = matGroup.getrHistData();
@@ -81,11 +120,11 @@ public class CalcHist {
 		
 		for (int i = 1; i < histSize; i++) {
 			Imgproc.line(histImage, new Point(binW * (i - 1), histH - Math.round(bHistData[i - 1])),
-					new Point(binW * (i), histH - Math.round(bHistData[i])), new Scalar(255, 0, 0), 1);
+					new Point(binW * (i), histH - Math.round(bHistData[i])), new Scalar(255, 0, 0), thickness);
 			Imgproc.line(histImage, new Point(binW * (i - 1), histH - Math.round(gHistData[i - 1])),
-					new Point(binW * (i), histH - Math.round(gHistData[i])), new Scalar(0, 255, 0), 1);
+					new Point(binW * (i), histH - Math.round(gHistData[i])), new Scalar(0, 255, 0), thickness);
 			Imgproc.line(histImage, new Point(binW * (i - 1), histH - Math.round(rHistData[i - 1])),
-					new Point(binW * (i), histH - Math.round(rHistData[i])), new Scalar(0, 0, 255), 1);
+					new Point(binW * (i), histH - Math.round(rHistData[i])), new Scalar(0, 0, 255), thickness);
 		}
 	}
 	
